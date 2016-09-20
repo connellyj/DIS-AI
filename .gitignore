@@ -1,0 +1,4 @@
+.idea/*
+environment/searchclient/*.class
+environment/sampleclients/*.class
+*.class
