@@ -49,8 +49,8 @@ public abstract class Strategy {
 	public abstract String toString();
 
 	public static class StrategyBFS extends Strategy {
-		private ArrayDeque<Node> frontier;
-		private HashSet<Node> frontierSet;
+		protected ArrayDeque<Node> frontier;
+		protected HashSet<Node> frontierSet;
 
 		public StrategyBFS() {
 			super();
@@ -92,35 +92,24 @@ public abstract class Strategy {
 		}
 	}
 
-	public static class StrategyDFS extends Strategy {
+	public static class StrategyDFS extends StrategyBFS {
 		public StrategyDFS() {
 			super();
-			throw new NotImplementedException();
+			frontier = new ArrayDeque<Node>();
+			frontierSet = new HashSet<Node>();
 		}
 
 		@Override
 		public Node getAndRemoveLeaf() {
-			throw new NotImplementedException();
+			Node n = frontier.pop();
+			frontierSet.remove(n);
+			return n;
 		}
 
 		@Override
 		public void addToFrontier(Node n) {
-			throw new NotImplementedException();
-		}
-
-		@Override
-		public int countFrontier() {
-			throw new NotImplementedException();
-		}
-
-		@Override
-		public boolean frontierIsEmpty() {
-			throw new NotImplementedException();
-		}
-
-		@Override
-		public boolean inFrontier(Node n) {
-			throw new NotImplementedException();
+			frontier.push(n);
+			frontierSet.add(n);
 		}
 
 		@Override
