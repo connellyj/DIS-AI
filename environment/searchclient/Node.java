@@ -11,8 +11,8 @@ import searchclient.Command.Type;
 public class Node {
 	private static final Random RND = new Random(1);
 
-	public static int MAX_ROW = 70;
-	public static int MAX_COL = 70;
+	public static int MAX_ROW;
+	public static int MAX_COL;
 
 	public int agentRow;
 	public int agentCol;
@@ -27,10 +27,10 @@ public class Node {
 	// this.walls[row][col] is true if there's a wall at (row, col)
 	//
 
-	public boolean[][] walls = new boolean[MAX_ROW][MAX_COL];
-	public char[][] boxes = new char[MAX_ROW][MAX_COL];
-	public char[][] goals = new char[MAX_ROW][MAX_COL];
-
+	public static boolean[][] walls;
+	public static char[][] goals;
+	public char[][] boxes;
+	
 	public Node parent;
 	public Command action;
 
@@ -38,13 +38,24 @@ public class Node {
 	
 	private int _hash = 0;
 
+	public static void initNodeStatics(int max_row, int max_col) {
+		System.err.println("Initializing Node statics !!!!!");
+
+		MAX_ROW = max_row;
+		MAX_COL = max_col;
+		walls = new boolean[MAX_ROW][MAX_COL];
+		goals = new char[MAX_ROW][MAX_COL];
+	}
+
 	public Node(Node parent) {
+		System.err.println("node constructor !!!!");
 		this.parent = parent;
 		if (parent == null) {
 			this.g = 0;
 		} else {
 			this.g = parent.g() + 1;
 		}
+		this.boxes = new char[MAX_ROW][MAX_COL];
 	}
 
 	public int g() {
@@ -130,12 +141,11 @@ public class Node {
 		return this.boxes[row][col] > 0;
 	}
 
+
 	private Node ChildNode() {
 		Node copy = new Node(this);
 		for (int row = 0; row < MAX_ROW; row++) {
-			System.arraycopy(this.walls[row], 0, copy.walls[row], 0, MAX_COL);
 			System.arraycopy(this.boxes[row], 0, copy.boxes[row], 0, MAX_COL);
-			System.arraycopy(this.goals[row], 0, copy.goals[row], 0, MAX_COL);
 		}
 		return copy;
 	}

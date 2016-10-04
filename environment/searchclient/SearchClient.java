@@ -22,26 +22,44 @@ public class SearchClient {
 
 		int row = 0;
 		boolean agentFound = false;
-		this.initialState = new Node(null);
+
+		int max_col = line.length();
+		// dis is expensive and slightly gross
+		int max_row = (int) serverMessages.lines().count();
+		System.err.println(max_row);
+
+		
+		int agentRow;
+		int agentCol;
+		LinkedList<int[]> boxCoords = new LinkedList<int[]>();
+		LinkedList<int[]> goalCoords = new LinkedList<int[]>();
 
 		while (!line.equals("")) {
 			for (int col = 0; col < line.length(); col++) {
 				char chr = line.charAt(col);
 
 				if (chr == '+') { // Wall.
-					this.initialState.walls[row][col] = true;
+					Node.walls[row][col] = true;
 				} else if ('0' <= chr && chr <= '9') { // Agent.
 					if (agentFound) {
 						System.err.println("Error, not a single agent level");
 						System.exit(1);
 					}
 					agentFound = true;
-					this.initialState.agentRow = row;
-					this.initialState.agentCol = col;
+					agentRow = row;
+					agentCol = col;
 				} else if ('A' <= chr && chr <= 'Z') { // Box.
-					this.initialState.boxes[row][col] = chr;
+					int[] boxInfo = new int[3];
+					boxInfo[0] = row;
+					boxInfo[1] = col;
+					boxInfo[2] = chr;
+					boxCoords.add(boxInfo);
 				} else if ('a' <= chr && chr <= 'z') { // Goal.
-					this.initialState.goals[row][col] = chr;
+					int[] goalInfo = new int[3];
+					goalInfo[0] = row;
+					goalInfo[1] = col;
+					goalInfo[2] = chr;
+					goalCoords.add(goalInfo);
 				} else if (chr == ' ') {
 					// Free space.
 				} else {
@@ -51,6 +69,20 @@ public class SearchClient {
 			}
 			line = serverMessages.readLine();
 			row++;
+		}
+
+		Node.initNodeStatics(max_row+1, max_col+1);
+		this.initialState = new Node(null);
+
+		this.initialState.agentRow = agentRow;
+		this.initialState.agentCol = agentCol;
+
+		for (int[] boxInfo : boxCoords) {
+			this.initialState[boxInfo[0]][boxInfo[1]] = boxInfo[2];
+		}
+
+		for (int[] goalInfo : goalCoords) {
+			Node.goals[goalInfo[0]][goalInfo[1]] = goalInfo[2];
 		}
 	}
 
@@ -95,9 +127,9 @@ public class SearchClient {
 		SearchClient client = new SearchClient(serverMessages);
 
 		Strategy strategy;
-		//strategy = new StrategyBFS();
+		strategy = new StrategyBFS();
 		// Ex 1:
-		strategy = new StrategyDFS();
+		//strategy = new StrategyDFS();
 
 		// Ex 3:
 		// strategy = new StrategyBestFirst(new AStar(client.initialState));
