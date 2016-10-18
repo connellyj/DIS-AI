@@ -39,8 +39,6 @@ public class Node {
 	private int _hash = 0;
 
 	public static void initNodeStatics(int max_row, int max_col) {
-		System.err.println("Initializing Node statics !!!!!");
-
 		MAX_ROW = max_row;
 		MAX_COL = max_col;
 		walls = new boolean[MAX_ROW][MAX_COL];
@@ -48,7 +46,6 @@ public class Node {
 	}
 
 	public Node(Node parent) {
-		System.err.println("node constructor !!!!");
 		this.parent = parent;
 		if (parent == null) {
 			this.g = 0;

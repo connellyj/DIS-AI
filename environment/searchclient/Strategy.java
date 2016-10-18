@@ -2,6 +2,7 @@ package searchclient;
 
 import java.util.ArrayDeque;
 import java.util.HashSet;
+import java.util.PriorityQueue;
 
 import searchclient.Memory;
 import searchclient.NotImplementedException;
@@ -45,7 +46,6 @@ public abstract class Strategy {
 
 	public abstract boolean frontierIsEmpty();
 
-	@Override
 	public abstract String toString();
 
 	public static class StrategyBFS extends Strategy {
@@ -72,6 +72,11 @@ public abstract class Strategy {
 		}
 
 		@Override
+		public String toString() {
+			return "Breadth-first Search";
+		}
+
+		@Override
 		public int countFrontier() {
 			return frontier.size();
 		}
@@ -84,11 +89,6 @@ public abstract class Strategy {
 		@Override
 		public boolean inFrontier(Node n) {
 			return frontierSet.contains(n);
-		}
-
-		@Override
-		public String toString() {
-			return "Breadth-first Search";
 		}
 	}
 
@@ -120,42 +120,48 @@ public abstract class Strategy {
 
 	// Ex 3: Best-first Search uses a priority queue (Java contains no implementation of a Heap data structure)
 	public static class StrategyBestFirst extends Strategy {
+		protected PriorityQueue<Node> frontier;
+		protected HashSet<Node> frontierSet;
 		private Heuristic heuristic;
 
 		public StrategyBestFirst(Heuristic h) {
 			super();
 			this.heuristic = h;
-			throw new NotImplementedException();
+			frontier = new PriorityQueue<Node>(h);
+			frontierSet = new HashSet<Node>();
 		}
 
 		@Override
 		public Node getAndRemoveLeaf() {
-			throw new NotImplementedException();
+			Node n = frontier.poll();
+			frontierSet.remove(n);
+			return n;
 		}
 
 		@Override
 		public void addToFrontier(Node n) {
-			throw new NotImplementedException();
-		}
-
-		@Override
-		public int countFrontier() {
-			throw new NotImplementedException();
-		}
-
-		@Override
-		public boolean frontierIsEmpty() {
-			throw new NotImplementedException();
-		}
-
-		@Override
-		public boolean inFrontier(Node n) {
-			throw new NotImplementedException();
+			frontier.offer(n);
+			frontierSet.add(n);
 		}
 
 		@Override
 		public String toString() {
 			return "Best-first Search (PriorityQueue) using " + this.heuristic.toString();
+		}
+
+		@Override
+		public int countFrontier() {
+			return frontier.size();
+		}
+
+		@Override
+		public boolean frontierIsEmpty() {
+			return frontier.isEmpty();
+		}
+
+		@Override
+		public boolean inFrontier(Node n) {
+			return frontierSet.contains(n);
 		}
 	}
 }
