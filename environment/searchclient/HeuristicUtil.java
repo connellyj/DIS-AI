@@ -24,7 +24,8 @@ public class HeuristicUtil {
     }
 
     public static int agentToClosestBoxManhattan(Node n) {
-        return findClosestBoxDistance(n.agentRow, n.agentCol, n);
+        // Subtract 1 because the agent only has to be next to the box to act on it.
+        return findClosestBoxDistance(n.agentRow, n.agentCol, n) - 1;
     }
 
     public static int sumGoalsToClosestBoxManhattan(Node n, 
