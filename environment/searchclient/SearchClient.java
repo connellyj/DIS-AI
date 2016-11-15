@@ -119,8 +119,8 @@ public class SearchClient {
         // Ex 3:
         // strategy = new StrategyBestFirst(new AStar(client.initialState));
         // You're welcome to test WA* out with different values, but for the report you must at least indicate benchmarks for W = 5.
-        // strategy = new StrategyBestFirst(new WeightedAStar(client.initialState, 5));
-         strategy = new StrategyBestFirst(new Greedy(client.initialState));
+         strategy = new StrategyBestFirst(new WeightedAStar(client.initialState, 5));
+        // strategy = new StrategyBestFirst(new Greedy(client.initialState));
 
         LinkedList<Node> solution;
         try {
