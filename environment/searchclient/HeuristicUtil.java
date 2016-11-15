@@ -1,6 +1,7 @@
 package searchclient;
 
 import java.lang.Math;
+import java.lang.Character;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -40,6 +41,7 @@ public class HeuristicUtil {
                 totalDist += dist;
             }
         }
+ 
         return totalDist;
 
     }
@@ -51,6 +53,7 @@ public class HeuristicUtil {
 
     // Needs to take the target box letter as a parameter
     public static int findClosestBoxDistance(int srcRow, int srcCol, Node n, char targetChr) {
+        targetChr = Character.toUpperCase(targetChr);
         int minDist = Node.MAX_ROW + Node.MAX_COL;
         for (int r = 0; r < Node.MAX_ROW; r++) {
             for (int c = 0; c < Node.MAX_COL; c++) {

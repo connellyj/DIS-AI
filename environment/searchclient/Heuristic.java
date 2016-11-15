@@ -39,7 +39,7 @@ public abstract class Heuristic implements Comparator<Node> {
     }
 
     public int h(Node n) {
-        return HeuristicUtil.agentToClosestBoxManhattan(n) 
+    	return HeuristicUtil.agentToClosestBoxManhattan(n) 
         	+ HeuristicUtil.sumGoalsToClosestBoxManhattan(n, goalMap);
     }
 
