@@ -69,6 +69,7 @@ public class SearchClient {
 
     public LinkedList<Node> Search(Strategy strategy) throws IOException {
         System.err.format("Search starting with strategy %s.\n", strategy.toString());
+        if(this.initialState.isGoalState()) return this.initialState.extractPlan();
         strategy.addToFrontier(this.initialState);
 
         int iterations = 0;
@@ -84,13 +85,16 @@ public class SearchClient {
 
             Node leafNode = strategy.getAndRemoveLeaf();
 
-            if (leafNode.isGoalState()) {
+            /*if (leafNode.isGoalState()) {
                 return leafNode.extractPlan();
-            }
+            }*/
 
             strategy.addToExplored(leafNode);
             for (Node n : leafNode.getExpandedNodes()) { // The list of expanded nodes is shuffled randomly; see Node.java.
                 if (!strategy.isExplored(n) && !strategy.inFrontier(n)) {
+                    if (n.isGoalState()) {
+                        return n.extractPlan();
+                    }
                     strategy.addToFrontier(n);
                 }
             }
@@ -108,15 +112,15 @@ public class SearchClient {
         SearchClient client = new SearchClient(serverMessages);
 
         Strategy strategy;
-        strategy = new StrategyBFS();
+        // strategy = new StrategyBFS();
         // Ex 1:
-        //strategy = new StrategyDFS();
+        // strategy = new StrategyDFS();
 
         // Ex 3:
-        //strategy = new StrategyBestFirst(new AStar(client.initialState));
+        // strategy = new StrategyBestFirst(new AStar(client.initialState));
         // You're welcome to test WA* out with different values, but for the report you must at least indicate benchmarks for W = 5.
-        //strategy = new StrategyBestFirst(new WeightedAStar(client.initialState, 5));
-        // strategy = new StrategyBestFirst(new Greedy(client.initialState));
+        // strategy = new StrategyBestFirst(new WeightedAStar(client.initialState, 5));
+         strategy = new StrategyBestFirst(new Greedy(client.initialState));
 
         LinkedList<Node> solution;
         try {
