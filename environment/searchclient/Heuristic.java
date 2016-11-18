@@ -12,7 +12,7 @@ import searchclient.HeuristicUtil.*;
 public abstract class Heuristic implements Comparator<Node> {
 	protected HashMap<Character, LinkedList<Integer>> goalMap;
     
-    public Heuristic(Node initialState) {  	
+    public Heuristic(Node initialState) {	
         // Here's a chance to pre-process the static parts of the level.
       
         // goalMap: maps goal char to its board locations (idx).

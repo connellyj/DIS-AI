@@ -71,7 +71,17 @@ public class HeuristicUtil {
 
     public static int[][] makeAPSP() {
         int[][] distances = initDistanceMatrix();
-        return null;
+        int numVertices = Node.MAX_ROW * Node.MAX_COL;
+        for(int k = 1; k < numVertices; k++) {
+            for(int i = 1; i < numVertices; i++) {
+                for(int j = 1; j < numVertices; j++) {
+                    if(distances[i][j] > distances[i][k] + distances[k][j]) {
+                        distances[i][j] = distances[i][k] + distances[k][j];
+                    }
+                }
+            }
+        }
+        return distances;
     }
 
     private static int[][] initDistanceMatrix() {
