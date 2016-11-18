@@ -11,9 +11,11 @@ import searchclient.NotImplementedException;
 public class HeuristicUtil {
 
     static HeuristicUtil instance;
+
     private int[][] distancesMap;
     private HashMap<Character, LinkedList<Integer>> goalMap;
 
+    // needs to be called before using anything HeursticUtil functionality
     public static void initHeuristic(Node initialState) {
         if(instance == null) {
             instance = new HeuristicUtil();
@@ -22,8 +24,8 @@ public class HeuristicUtil {
         instance.initGoalMap(initialState);
     }
 
+    // maps goal char to its board locations (idx)
     private void initGoalMap(Node initialState) {
-        // goalMap: maps goal char to its board locations (idx).
         goalMap = new HashMap<Character, LinkedList<Integer>>();
 
         // Populate goals
@@ -45,19 +47,15 @@ public class HeuristicUtil {
         }
     }
 
-    public static int coordsToIdx(int row, int col) {
+    private static int coordsToIdx(int row, int col) {
         return row * Node.MAX_COL + col;
     }
 
-    public static int[] idxToCoords(int idx) {
+    private static int[] idxToCoords(int idx) {
         int[] result = new int[2];
         result[0] = idx / Node.MAX_COL; // row
         result[1] = idx % Node.MAX_COL; // col
         return result;
-    }
-
-    public static int computeManhattan(int r1, int c1, int r2, int c2) {
-        return Math.abs(r1-r2) + Math.abs(c1-c2);
     }
 
     public static int agentToClosestBoxManhattan(Node n) {
@@ -82,12 +80,12 @@ public class HeuristicUtil {
     }
 
     // If there's no target box char, send flag value of '0'.
-    public static int findClosestBoxDistance(int row, int col, Node n) {
+    private static int findClosestBoxDistance(int row, int col, Node n) {
         return findClosestBoxDistance(row, col, n, '0');
     }
 
     // Needs to take the target box letter as a parameter
-    public static int findClosestBoxDistance(int srcRow, int srcCol, Node n, char targetChr) {
+    private static int findClosestBoxDistance(int srcRow, int srcCol, Node n, char targetChr) {
         targetChr = Character.toUpperCase(targetChr);
         int minDist = Node.MAX_ROW + Node.MAX_COL;
         for (int r = 0; r < Node.MAX_ROW; r++) {
