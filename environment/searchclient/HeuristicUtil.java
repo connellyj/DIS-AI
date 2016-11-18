@@ -15,13 +15,16 @@ public class HeuristicUtil {
     private int[][] distancesMap;
     private HashMap<Character, LinkedList<Integer>> goalMap;
 
+    private HeuristicUtil(Node initialState) {
+        makeAPSP();
+        initGoalMap(initialState);
+    }
+
     // needs to be called before using anything HeursticUtil functionality
     public static void initHeuristic(Node initialState) {
         if(instance == null) {
-            instance = new HeuristicUtil();
+            instance = new HeuristicUtil(initialState);
         }
-        instance.makeAPSP();
-        instance.initGoalMap(initialState);
     }
 
     // maps goal char to its board locations (idx)
