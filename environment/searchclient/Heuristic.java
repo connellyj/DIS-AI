@@ -10,37 +10,15 @@ import searchclient.HeuristicUtil.*;
 
 
 public abstract class Heuristic implements Comparator<Node> {
-	protected HashMap<Character, LinkedList<Integer>> goalMap;
     
     public Heuristic(Node initialState) {	
         // Here's a chance to pre-process the static parts of the level.
-      
-        // goalMap: maps goal char to its board locations (idx).
-        goalMap = new HashMap<Character, LinkedList<Integer>>();
-
-        // Populate goals
-        for(int r = 0;  r < Node.MAX_ROW; r++) {
-            for(int c = 0; c < Node.MAX_COL; c++) {
-                char goalChr = initialState.goals[r][c];
-                if(goalChr != '\u0000') {
-                	int idx = HeuristicUtil.coordsToIdx(r,c, Node.MAX_COL);
-                	if (goalMap.get(goalChr) == null) {
-                		LinkedList<Integer> newList = new LinkedList<Integer>();
-                		newList.add(idx);
-                		goalMap.put(goalChr, newList);
-                	}
-                	else {
-                		goalMap.get(goalChr).add(idx);
-                	}
-                }
-            }
-            
-        }
+        HeuristicUtil.initHeuristic(initialState);
     }
 
     public int h(Node n) {
     	return HeuristicUtil.agentToClosestBoxManhattan(n) 
-        	+ HeuristicUtil.sumGoalsToClosestBoxManhattan(n, goalMap);
+        	+ HeuristicUtil.sumGoalsToClosestBoxManhattan(n);
     }
 
     public abstract int f(Node n);
